@@ -1,2 +1,0 @@
-
--DCATKIN_DEVEL_PREFIX=/home/marcel/anro_ws/src/kalinski_karpowicz/devel -DCMAKE_INSTALL_PREFIX=/home/marcel/anro_ws/src/kalinski_karpowicz/install -G Unix Makefiles
