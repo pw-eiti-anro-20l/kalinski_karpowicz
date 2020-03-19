@@ -56,7 +56,6 @@ if __name__ == '__main__':
     default_speed = rospy.get_param('~default_speed', 1)
     publish_rate = rospy.get_param('~publish_rate', 10)
     cmd_topic = rospy.get_param('~cmd_topic', '/turtle1/cmd_vel')
-    publish_rate = rospy.get_param('~publish_rate', 10)
 
 # get steering keys params
     f_key = rospy.get_param('~front_key', 'w')

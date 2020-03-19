@@ -1,0 +1,14 @@
+<launch>
+    <node pkg="kalinski_karpowicz" type="keyboard_steering.py" name="keyboard_steering" output="screen">
+        <param name="default_speed" type="double" value="2"/>
+        <param name="publish_rate" type="double" value="10"/>
+        <param name="cmd_topic" type="string" value="turtle1/cmd_vel"/>
+        <param name="front_key" type="string" value="r"/>
+        <param name="back_key" type="string" value="f"/>
+        <param name="left_key" type="string" value="d"/>
+        <param name="right_key" type="string" value="g"/>
+    </node>
+
+    <node pkg="turtlesim" type="turtlesim_node" name="turle_sim" output="screen"/>
+
+</launch>
