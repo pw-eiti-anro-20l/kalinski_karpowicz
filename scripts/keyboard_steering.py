@@ -34,13 +34,17 @@ class Keyboard_monitor:
     def publish(self):
         if(self.msg_values[self.back_key] == 1):
             self.cmd_msg.linear.x = -self.default_speed
-        else:
+        elif(self.msg_values[self.front_key] == 1):
             self.cmd_msg.linear.x = self.default_speed
+        else:
+            self.cmd_msg.linear.x = 0
 
         if(self.msg_values[self.left_key] == 1):
-            self.cmd_msg.angular.z = self.default_speed
+            self.cmd_msg.angular.z = 1
+        elif(self.msg_values[self.right_key] == 1):
+            self.cmd_msg.angular.z = -1
         else:
-            self.cmd_msg.angular.z = -self.default_speed
+            self.cmd_msg.angular.z = 0
 
         cmd_pub.publish(self.cmd_msg)
 
