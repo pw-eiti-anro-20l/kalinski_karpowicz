@@ -1,2 +1,2 @@
-
--DCATKIN_DEVEL_PREFIX=/home/marcel/catkin_ws/src/kalinski_karpowicz/devel -DCMAKE_INSTALL_PREFIX=/home/marcel/catkin_ws/src/kalinski_karpowicz/install -G Unix Makefiles
+urdf_converter
+-DCATKIN_DEVEL_PREFIX=/home/marcel/ros_ws/anro_ws/src/kalinski_karpowicz/devel -DCMAKE_INSTALL_PREFIX=/home/marcel/ros_ws/anro_ws/src/kalinski_karpowicz/install -G Unix Makefiles
