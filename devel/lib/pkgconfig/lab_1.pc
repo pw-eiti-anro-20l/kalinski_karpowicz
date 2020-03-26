@@ -1,0 +1,8 @@
+prefix=/home/marcel/ros_ws/anro_ws/src/kalinski_karpowicz/devel
+
+Name: lab_1
+Description: Description of lab_1
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
