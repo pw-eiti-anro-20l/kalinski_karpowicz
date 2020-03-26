@@ -23,3 +23,6 @@ brak
 
 ## Tematy publikowane:
 podany w parametrze ~cmd_topic
+
+## Diagram
+Aby utworzyć diagram należy uruchomić launch a następnie wywołać polecenie rosrun rqt_graph rqt_graph
