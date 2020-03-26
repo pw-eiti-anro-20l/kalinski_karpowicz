@@ -7,7 +7,7 @@
 # new environment variables
 
 # modified environment variables
-export CMAKE_PREFIX_PATH="/home/marcel/catkin_ws/src/kalinski_karpowicz/devel:$CMAKE_PREFIX_PATH"
-export PWD="/home/marcel/catkin_ws/src/kalinski_karpowicz/build"
-export ROSLISP_PACKAGE_DIRECTORIES="/home/marcel/catkin_ws/src/kalinski_karpowicz/devel/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
-export ROS_PACKAGE_PATH="/home/marcel/catkin_ws/src/kalinski_karpowicz/src:$ROS_PACKAGE_PATH"
+export CMAKE_PREFIX_PATH="/home/marcel/ros_ws/anro_ws/src/kalinski_karpowicz/devel:$CMAKE_PREFIX_PATH"
+export PWD="/home/marcel/ros_ws/anro_ws/src/kalinski_karpowicz/build"
+export ROSLISP_PACKAGE_DIRECTORIES="/home/marcel/ros_ws/anro_ws/src/kalinski_karpowicz/devel/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
+export ROS_PACKAGE_PATH="/home/marcel/ros_ws/anro_ws/src/kalinski_karpowicz/src:$ROS_PACKAGE_PATH"
