@@ -1,0 +1,1 @@
+# funkcja, read_DH(path_to_DH_table), tworzy plik params.yaml w folderze config i zwraca do niego sciezke.
