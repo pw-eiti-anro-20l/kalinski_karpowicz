@@ -6,3 +6,7 @@ Wizualizacja robota:
 
 Stworzenie modelu URDF z xacro:
      xacro xacro/test.xacro > urdf/urdf_from_xacro.urdf 
+
+
+Odpalenie całości jako launchfile. Przed tym trzba zmienić ścieżkę do tabelki DH!!:
+    roslaunch lab_2 lab2.launch
