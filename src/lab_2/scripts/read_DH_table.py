@@ -3,9 +3,10 @@
 # funkcja, read_DH(path_to_DH_table), tworzy plik params.yaml w folderze config i zwraca do niego sciezke.
 from tf.transformations import translation_matrix, rotation_matrix, \
      concatenate_matrices, euler_from_matrix, translation_from_matrix
-from os.path import join
+from os.path import join, dirname
 import csv
 import math
+import rospy
 
 table = {'i':[], 'a':[], 'd':[], 'alpha':[], 'theta':[]}
 
@@ -61,4 +62,9 @@ def dh_2_rpy(table_name, config_file):
     	    f.write("y%d: %.2f\n" % ((i+1), yes[i]))
     	    f.write("z%d: %.2f\n" % ((i+1), zes[i]))
 
-dh_2_rpy('dh_table.csv', 'urdf_params.yaml')
+if __name__ == '__main__':
+    rospy.init_node("gazebo_odometry_node")
+
+    table_path = rospy.get_param('~dh_table_path', '/home/marcel/ros_ws/anro_ws/kalinski_karpowicz/src/lab_2/config/dh_table.csv')
+    dh_2_rpy(table_path, join(dirname(table_path), 'urdf_params.yaml'))
+    rospy.loginfo('table converted')
