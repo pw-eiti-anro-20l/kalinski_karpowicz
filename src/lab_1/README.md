@@ -2,7 +2,7 @@
 
 ## Lab1
 Pierwsze laboratorium znajduje się na branchu master.
-Aby odpalić skrypt do sterowania żółwiem należy użyć polecenia roslaunch kalinski-karpowicz lab1.launch
+Aby odpalić skrypt do sterowania żółwiem należy użyć polecenia roslaunch lab_1 lab1.launch
 
 ## wymagane paczki:
 python2 pynput : https://pypi.org/project/pynput/
