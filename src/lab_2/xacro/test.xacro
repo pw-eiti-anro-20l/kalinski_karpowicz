@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot name="robot_from_DH_table" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <xacro:property name="yaml_file" value="$(find lab_2)/config/test.yaml" />
+    <xacro:property name="yaml_file" value="$(find lab_2)/config/urdf_params.yaml" />
     <xacro:property name="yaml_params" value="${load_yaml(yaml_file)}"/>
 
     <xacro:property name="roll1" value="${yaml_params['roll1']}" />
