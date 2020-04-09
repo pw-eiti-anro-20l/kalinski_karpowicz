@@ -29,15 +29,15 @@
             <geometry>
               <cylinder radius="0.2" length="0.5"/>
             </geometry>
-            <origin xyz="0 0 1" rpy="0 0 0"/>
+            <origin xyz="0 0 0" rpy="0 0 1"/>
             <material name="blue"/>
           </visual>
         </link>
 
     </xacro:macro>
 
-    <xacro:macro name="joint_" params="parent child x y z roll pitch yaw">
-        <joint name="${parent}_to_${child}" type="continuous">
+    <xacro:macro name="joint_" params="parent child x y z roll pitch yaw type">
+        <joint name="${parent}_to_${child}" type="${type}">
             <parent link="${parent}"/>
             <child link="${child}"/>
             <axis xyz="0 0 1"/>
@@ -52,17 +52,17 @@
 
     <xacro:link_ name="link_1" />
     
-    <xacro:joint_ parent="base_link" child="link_0" x="0" y="0" z="0" roll="0" pitch="0" yaw="0" />
+    <xacro:joint_ parent="base_link" child="link_0" x="0" y="0" z="0" roll="0" pitch="0" yaw="0" type="fixed" />
 
 
-    <xacro:joint_ parent="link_0" child="link_1" x="${x1}" y="${y1}" z="${z1}" roll="${roll1}" pitch="${pitch1}" yaw="${yaw1}" />
+    <xacro:joint_ parent="link_0" child="link_1" x="${x1}" y="${y1}" z="${z1}" roll="${roll1}" pitch="${pitch1}" yaw="${yaw1}" type="continuous" />
     
     <xacro:link_ name="link_2" /> 
 
-    <xacro:joint_ parent="link_1" child="link_2" x="${x2}" y="${y2}" z="${z2}" roll="${roll2}" pitch="${pitch2}" yaw="${yaw2}" />
+    <xacro:joint_ parent="link_1" child="link_2" x="${x2}" y="${y2}" z="${z2}" roll="${roll2}" pitch="${pitch2}" yaw="${yaw2}" type="continuous"/>
 
     <xacro:link_ name="link_3" /> 
 
-    <xacro:joint_ parent="link_2" child="link_3" x="${x3}" y="${y3}" z="${z3}" roll="${roll3}" pitch="${pitch3}" yaw="${yaw3}" />
+    <xacro:joint_ parent="link_2" child="link_3" x="${x3}" y="${y3}" z="${z3}" roll="${roll3}" pitch="${pitch3}" yaw="${yaw3}" type="continuous"/>
     
 </robot>
