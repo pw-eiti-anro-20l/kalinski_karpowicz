@@ -65,6 +65,6 @@ def dh_2_rpy(table_name, config_file):
 if __name__ == '__main__':
     rospy.init_node("gazebo_odometry_node")
 
-    table_path = rospy.get_param('~dh_table_path', '/home/marcel/ros_ws/anro_ws/kalinski_karpowicz/src/lab_2/config/dh_table.csv')
+    table_path = rospy.get_param('~dh_table_path', 'dh_table.csv')
     dh_2_rpy(table_path, join(dirname(table_path), 'urdf_params.yaml'))
     rospy.loginfo('table converted')
