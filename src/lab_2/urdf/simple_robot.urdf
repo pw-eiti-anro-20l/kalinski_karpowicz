@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<robot name="origins">
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <cylinder length="0.5" radius="0.2"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="link_0">
+    <visual>
+      <geometry>
+        <box size="0.2 0.1 0.2"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="black"/>
+    </visual>
+  </link>
+
+  <joint name="base_to_link_0" type="fixed">
+    <parent link="base_link"/>
+    <child link="link_0"/>
+    <origin xyz="0 0 0"/>
+  </joint>
+
+
+  <link name="link_1">
+    <visual>
+      <geometry>
+        <box size="0.2 0.1 0.2"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 1"/>
+      <material name="white"/>
+    </visual>
+  </link>
+
+
+  <joint name="link_0_to_link_1" type="continuous">
+    <parent link="link_0"/>
+    <child link="link_1"/>
+    <axis xyz="0 0 1"/>
+    <origin xyz="1 1 0" rpy="0 0 0"/>
+  </joint>
+
+  <link name="link_2">
+    <visual>
+      <geometry>
+        <box size="0.2 0.1 0.2"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 1"/>
+      <material name="black"/>
+    </visual>
+  </link>
+
+  <joint name="link_1_to_link_2" type="continuous">
+    <parent link="link_1"/>
+    <child link="link_2"/>
+    <axis xyz="0 0 1"/>
+    <origin xyz="1 0 0" rpy="0 0 0"/>
+  </joint>
+
+</robot>
