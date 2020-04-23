@@ -1,8 +1,4 @@
 <launch>
-	
-    <!-- read DH table and open RVIZ with joint state publisher, and robot_state_publisher-->
-    <include file="$(find lab_3)/launch/rviz.launch"/>
-
     <node pkg="lab_3" type="kdl_dkin.py" name="kdl_dkin" output="screen">
         <remap from="head_pose" to="head_pose_kdl"/>
     </node>
@@ -10,5 +6,4 @@
     <node pkg="lab_3" type="non_kdl_dkin.py" name="non_kdl_dkin" output="screen">
         <remap from="head_pose" to="head_pose_non_kdl"/>
     </node>
-
 </launch>
