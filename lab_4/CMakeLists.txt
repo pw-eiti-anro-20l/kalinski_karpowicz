@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(lab4)
+project(lab_4)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -9,7 +9,6 @@ project(lab4)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   message_generation
-  roscpp
   rospy
   std_msgs
 )
@@ -57,8 +56,8 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate services in the 'srv' folder
  add_service_files(
    FILES
-   jint.srv
-   oint.srv
+   JintControl.srv
+   OintControl.srv
  )
 
 ## Generate actions in the 'action' folder

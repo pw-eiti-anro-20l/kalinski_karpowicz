@@ -2,18 +2,18 @@
 
 import rospy
 import yaml
-import os
+from os.path import dirname, realpath
 from PyKDL import JntArray, Frame, Segment, Joint, Chain, ChainFkSolverPos_recursive
 from sensor_msgs.msg import JointState
 from geometry_msgs.msg import PoseStamped
 
 
-class KdlDkin:
+class KdlDkin(object):
     def __init__(self, params, publisher):
         self.pose_publisher = publisher
         self.params = params
         self.last_correct_pose = None
-        self.constraints = self.read_constraints(os.path.dirname(os.path.realpath(__file__))+ '/../config/joint_constraints.yaml')
+        self.constraints = self.read_constraints(dirname(dirname(realpath(__file__)))+ '/../config/joint_constraints.yaml')
 
     def read_constraints(self, path):
         with open(path, 'r') as f:
@@ -27,7 +27,7 @@ class KdlDkin:
                 return False
         return True
 
-    def joint_state_callback(self, msg):
+    def compute_effector_position(self, msg):
         positions = JntArray(3)
         chain =Chain()   
         kdl_frame = Frame()
@@ -63,8 +63,11 @@ class KdlDkin:
         kdl_pose.pose.orientation.x = quat[0]
         kdl_pose.pose.orientation.y = quat[1]
         kdl_pose.pose.orientation.z = quat[2]
-        kdl_pose.pose.orientation.w = quat[3]
+        kdl_pose.pose.orientation.w = quat[3]    
+        return kdl_pose   
 
+    def joint_state_callback(self, msg):
+        kdl_pose = compute_effector_position(msg)
         if(self.check_constraints(msg)):
             self.pose_publisher.publish(kdl_pose)
             self.last_correct_pose = kdl_pose
