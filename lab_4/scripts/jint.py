@@ -31,12 +31,13 @@ class GenericInterpolator(object):
 
 
 class JintInterpolator(KdlDkin, GenericInterpolator):
-	def __init__(self, frequency, params, path_pub, pose_pub):
+	def __init__(self, frequency, params, path_pub, pose_pub, head_pub):
 		super(JintInterpolator, self).__init__(params, pose_pub)
 		self.frequency = frequency
 		self.path = Path()
 		self.path_pub = path_pub
 		self.pose_pub = pose_pub
+		self.head_pub = head_pub
 		self.empty_joint_states = JointState()
 		self.empty_joint_states.header.stamp = rospy.Time.now()
 		self.empty_joint_states.name = ['link_0_to_link_1', 'link_1_to_link_2', 'link_2_to_link_3']
@@ -100,15 +101,17 @@ class JintInterpolator(KdlDkin, GenericInterpolator):
 		head_pose = self.compute_effector_position(joint_states)
 		self.path.header = head_pose.header	# fresh header, created in KdlDkin module
 		self.path.poses.append(head_pose)
+		self.head_pub.publish(head_pose)
 		self.path_pub.publish(self.path)
 
 if __name__ == '__main__':
 	rospy.init_node('jint_node', anonymous = False)
 	pose_pub = rospy.Publisher('interpolation', JointState, queue_size=1)
 	path_pub = rospy.Publisher('jint_path', Path, queue_size=1)
+	head_pub = rospy.Publisher('head_pose', PoseStamped, queue_size=1)
 	params = rospy.get_param('robot_params')
 
-	interpolator = JintInterpolator(10, params, path_pub,  pose_pub)
+	interpolator = JintInterpolator(10, params, path_pub,  pose_pub, head_pub)
 #	rospy.Subscriber("joint_states", JointState, inte.joint_state_callback)
 	s = rospy.Service('jint_control_srv', JintControl, interpolator.interpolation_callback)
 	rospy.loginfo("Interpolator ready")
