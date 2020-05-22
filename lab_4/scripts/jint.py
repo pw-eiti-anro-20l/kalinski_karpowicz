@@ -10,9 +10,29 @@ from nav_msgs.msg import Path
 from lab_4v0.srv import JintControl
 from lab_3.kdl_dkin import KdlDkin
 
-class Interpolator(KdlDkin):
+class GenericInterpolator(object):
+    def __init__(self):
+        pass
+
+    def linear_interpolation(self, start_angle, end_angle, execution_time, current_time):
+        return (start_angle + (float(end_angle - start_angle) / execution_time) * current_time)
+
+    def quadratic_coeffs(self, start_pos, request_pos, execution_time):
+        coeffs = []
+        for i in range(0, len(start_pos)):
+            coeffs.append(2. * float(request_pos[i] - start_pos[i]) / execution_time ** 2)
+        return coeffs
+
+    def quadratic_interpolation(self, start_angle, end_angle, execution_time, current_time, coeff):
+        if current_time < execution_time / 2.:
+            return start_angle + coeff * current_time ** 2
+        else:
+            return end_angle - coeff * (execution_time - current_time) ** 2
+
+
+class JintInterpolator(KdlDkin, GenericInterpolator):
 	def __init__(self, frequency, params, path_pub, pose_pub):
-		super(Interpolator, self).__init__(params, pose_pub)
+		super(JintInterpolator, self).__init__(params, pose_pub)
 		self.frequency = frequency
 		self.path = Path()
 		self.path_pub = path_pub
@@ -76,22 +96,6 @@ class Interpolator(KdlDkin):
 
 		return True
 
-	def linear_interpolation(self, start_angle, end_angle, execution_time, current_time):
-		return start_angle + (float(end_angle - start_angle) / execution_time) * current_time
-
-
-	def quadratic_coeffs(self, start_pos, request_pos, execution_time):
-		coeffs = []
-		for i in range(0, len(start_pos)):
-			coeffs.append(2. * float(request_pos[i] - start_pos[i]) / execution_time**2)
-		return coeffs
-
-	def quadratic_interpolation(self, start_angle, end_angle, execution_time, current_time, coeff):
-		if current_time < execution_time / 2.:
-			return start_angle + coeff * current_time**2
-		else:
-			return end_angle - coeff * (execution_time - current_time)**2
-
 	def publish_path(self, joint_states):
 		head_pose = self.compute_effector_position(joint_states)
 		self.path.header = head_pose.header	# fresh header, created in KdlDkin module
@@ -99,12 +103,12 @@ class Interpolator(KdlDkin):
 		self.path_pub.publish(self.path)
 
 if __name__ == '__main__':
-	rospy.init_node('jint', anonymous = False)
+	rospy.init_node('jint_node', anonymous = False)
 	pose_pub = rospy.Publisher('interpolation', JointState, queue_size=1)
 	path_pub = rospy.Publisher('jint_path', Path, queue_size=1)
 	params = rospy.get_param('robot_params')
 
-	interpolator = Interpolator(10, params, path_pub,  pose_pub)
+	interpolator = JintInterpolator(10, params, path_pub,  pose_pub)
 #	rospy.Subscriber("joint_states", JointState, inte.joint_state_callback)
 	s = rospy.Service('jint_control_srv', JintControl, interpolator.interpolation_callback)
 	rospy.loginfo("Interpolator ready")

@@ -1,0 +1,88 @@
+#!/usr/bin/env python
+
+import rospy
+from lab4.srv import OintServiceStruct
+from geometry_msgs.msg import PoseStamped
+import math
+from nav_msgs.msg import Path
+
+class GenericInterpolator(object):
+	def __init__(self, path_pub):
+		self.path_pub = path_pub
+		self.previous_pose = PoseStamped()
+    
+	def linear_interpolation(self, start_angle, end_angle, execution_time, current_time):
+		return (start_angle + (float(end_angle - start_angle) / execution_time) * current_time)
+
+	def quadratic_coeffs(self, start_pos, request_pos, execution_time):
+		coeffs = []
+		for i in range(0, len(start_pos)):
+			coeffs.append(2. * float(request_pos[i] - start_pos[i]) / execution_time**2)
+		return coeffs
+
+	def quadratic_interpolation(self, start_angle, end_angle, execution_time, current_time, coeff):
+		if current_time < execution_time / 2. :
+			return start_angle + coeff * current_time**2
+		else:
+			return end_angle - coeff * (execution_time - current_time)**2
+
+	def update(self, joint_states):
+		self.previous_pose = joint_states
+
+def interpolation_allowed(req):
+	if req.execution_time <= 0.:
+		print "Blad. Czas musi byc wiekszy od zera."
+		return False
+	if req.interpolation_type != "linear" and req.interpolation_type != "quadratic":
+		print "Blad. Niedozwolony typ interpolacji. Dozwolone typy: linear i quadratic."
+		return False
+	return True
+
+def interpolation_callback(req):
+	
+	if not interpolation_allowed(req):
+		return False
+
+	global prev_pos
+
+	new_pos = [req.x, req.y, req.z, req.qx, req.qy, req.qz, req.qw]
+
+	rate = rospy.Rate(freq)
+
+	current_time = 0.
+	frames_number = int(math.ceil(req.time * freq))
+
+	position = [None] * 7
+	if req.int_type == "linear":
+		
+		for i in range(frames_number + 1):
+			for k in range(0, 7):
+				position[k] = linear_int(prev_pos[k], new_pos[k], req.time, current_time)
+
+			pose = fill_poseStamped(position)
+			pub.publish(pose)
+			publish_path(pose)
+			current_time = current_time + 1. / freq
+			rate.sleep()
+
+	else:
+		a = compute_coefs(prev_pos, new_pos, req.time)
+		for i in range(frames_number + 1):
+			for k in range(0, 7):
+				position[k] = quadratic_int(prev_pos[k], new_pos[k], req.time, current_time, a[k])
+
+			pose = fill_poseStamped(position)
+			pub.publish(pose)
+			publish_path(pose)
+			current_time = current_time + 1. / freq
+			rate.sleep()
+
+	prev_pos = new_pos
+	return True
+
+if __name__ == "__main__":
+	rospy.init_node('oint')
+	pub = rospy.Publisher('/oint_pose', PoseStamped, queue_size=10)
+	path_pub = rospy.Publisher('oint_path', Path, queue_size=10)
+	service = rospy.Service('oint_control_srv', OintControl, handle_interpolation)
+	rospy.spin()
