@@ -1,0 +1,11 @@
+<launch>
+    <arg name="rviz_config" default="$(find lab_4)/config/oint_config.rviz" />
+
+    <node pkg="rqt_service_caller" name="rqt_service_caller" type="rqt_service_caller"/>
+
+    <!-- spawn rviz with required config -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rviz_config)" required="true"/>
+
+    <node pkg="lab_4" type="oint.py" name="oint_node" output="screen" required="true"/>
+
+</launch>

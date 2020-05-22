@@ -1,7 +1,9 @@
 <launch>
-    <arg name="rviz_config" default="$(find lab_4)/config/config.rviz" />
+    <arg name="rviz_config" default="$(find lab_4)/config/jint_config.rviz" />
     <arg name="model" default="3_degree_robot.xacro"/>
     
+    <node pkg="rqt_service_caller" name="rqt_service_caller" type="rqt_service_caller"/>
+
     <!-- read DH parameters from lab_2/config/dh_table.csv and save them in lab_2/config/urdf_params.yaml-->
     <node pkg="lab_2" type="read_DH_table.py" name="dh_converter" output="screen">
         <param name="dh_table_path" value="$(find lab_2)/config/dh_table.csv"/>
@@ -21,4 +23,5 @@
     <!-- spawn rviz with required config -->
     <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rviz_config)" required="true"/>
 
+    <node pkg="lab_4" type="jint.py" name="jint_node" output="screen" required="true"/>
 </launch>
