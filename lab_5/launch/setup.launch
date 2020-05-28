@@ -2,7 +2,7 @@
     <arg name="rviz_config" default="$(find lab_5)/config/config.rviz" />
     <arg name="model" default="3_degree_robot.xacro"/>
     
-    <!--node pkg="rqt_service_caller" name="rqt_service_caller" type="rqt_service_caller"/-->
+    <node pkg="rqt_service_caller" name="rqt_service_caller" type="rqt_service_caller"/>
 
     <!-- read DH parameters from lab_2/config/dh_table.csv and save them in lab_2/config/urdf_params.yaml-->
     <node pkg="lab_2" type="read_DH_table.py" name="dh_converter" output="screen">
@@ -22,11 +22,5 @@
 
     <!-- spawn rviz with required config -->
     <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rviz_config)" required="true"/>
-
-    <node pkg="lab_3" type="non_kdl_dkin.py" name="non_kdl_node" output="screen"/>
-    <!-- PoseStamped ( /oint_pose ) publisher -->
-    <node pkg="lab_5" type="oint.py" name="oint_node" output="screen" required="true"/>
-
-    <node pkg="lab_5" type="ikin.py" name="ikin_node" output="screen" required="true"/>
 
 </launch>
