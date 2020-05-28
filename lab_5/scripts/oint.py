@@ -15,7 +15,7 @@ class OintInt2(OintInterpolator):
         head_pose = rospy.wait_for_message('/head_pose', PoseStamped, timeout=1)
         p = head_pose.pose.position
         self.previous_pose = [p.x, p.y, p.z, 0, 0, 0, 1]
-        super(OintInt2, self).interpolation_callback(msg)
+        return super(OintInt2, self).interpolation_callback(msg)
 
 if __name__ == "__main__":
     rospy.init_node('oint_node')

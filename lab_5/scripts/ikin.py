@@ -63,7 +63,6 @@ class Ikin(KdlDkin):
         if not (self.check_constraints(theta)):
             rospy.logerr('Joint out of constraints')
         self.current_theta = theta
-        rospy.loginfo(theta)
 
         jointState = self.create_joint_state_msg(theta)
         self.state_publisher.publish(jointState)
