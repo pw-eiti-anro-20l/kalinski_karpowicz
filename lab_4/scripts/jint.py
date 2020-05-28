@@ -109,6 +109,7 @@ if __name__ == '__main__':
 	pose_pub = rospy.Publisher('interpolation', JointState, queue_size=1)
 	path_pub = rospy.Publisher('jint_path', Path, queue_size=1)
 	head_pub = rospy.Publisher('head_pose', PoseStamped, queue_size=1)
+	rospy.sleep(1)
 	params = rospy.get_param('robot_params')
 
 	interpolator = JintInterpolator(10, params, path_pub,  pose_pub, head_pub)

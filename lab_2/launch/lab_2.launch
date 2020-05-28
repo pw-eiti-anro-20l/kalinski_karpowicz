@@ -5,8 +5,8 @@
         <param name="dh_table_path" value="$(find lab_2)/config/dh_table.csv"/>
     </node>
 
-    <include file="$(find urdf_tutorial)/launch/display.launch">
+    <!--include file="$(find urdf_tutorial)/launch/display.launch">
         <arg name="model" default="$(find lab_2)/xacro/3_degree_robot.xacro"/>
-    </include>
+    </include-->
 
 </launch>

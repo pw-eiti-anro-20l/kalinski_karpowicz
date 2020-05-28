@@ -1,7 +1,6 @@
 <launch>
     <arg name="model" default="3_degree_robot.xacro"/>
     
-    <param name="robot_description" command="xacro '$(find lab_2)/xacro/$(arg model)'"/>
 
     <node name="rviz" pkg="rviz" type="rviz" args="-d $(find lab_3)/config/rviz_setup.rviz"/>
 
@@ -10,8 +9,10 @@
         <param name="dh_table_path" value="$(find lab_2)/config/dh_table.csv"/>
     </node>
 
+    <param name="robot_description" command="xacro '$(find lab_2)/xacro/$(arg model)'"/>
 
 
+    <param name="use_gui" value="true"/> 
     <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
 </launch>

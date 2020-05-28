@@ -9,13 +9,13 @@ from jint import GenericInterpolator
 
 
 class OintInterpolator(GenericInterpolator):
-    def __init__(self, frequency,  pose_pub, path_pub):
+    def __init__(self, frequency,  pose_pub, path_pub, start_pose=[0 for x in range(7)]):
         super(OintInterpolator, self).__init__()
         self.pose_pub = pose_pub
         self.path_pub = path_pub
         self.path = Path()
         self.frequency = frequency
-        self.previous_pose = [0 for x in range(7)]
+        self.previous_pose = start_pose
         self.previous_pose[6] = 1
 
     def interpolation_allowed(self, req):
@@ -94,7 +94,7 @@ if __name__ == "__main__":
     rospy.init_node('oint_node')
     pose_pub = rospy.Publisher('/oint_pose', PoseStamped, queue_size=1)
     path_pub = rospy.Publisher('/oint_path', Path, queue_size=1)
-
+    
     interpolator = OintInterpolator(10, pose_pub, path_pub)
     service = rospy.Service('oint_control_srv', OintControl, interpolator.interpolation_callback)
     rospy.loginfo("Interpolator ready")

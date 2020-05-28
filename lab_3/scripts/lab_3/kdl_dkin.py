@@ -18,7 +18,8 @@ class KdlDkin(object):
     def read_constraints(self, path):
         with open(path, 'r') as f:
             constraints = yaml.load(f)
-            print(constraints)
+            rospy.loginfo('constraints: '+repr(constraints))
+
             return [{'min':constraints[c][0], 'max':constraints[c][1]} for c in constraints]
 
     def check_constraints(self, msg):
@@ -67,8 +68,8 @@ class KdlDkin(object):
         return kdl_pose   
 
     def joint_state_callback(self, msg):
-        kdl_pose = compute_effector_position(msg)
         if(self.check_constraints(msg)):
+            kdl_pose = self.compute_effector_position(msg)
             self.pose_publisher.publish(kdl_pose)
             self.last_correct_pose = kdl_pose
         else:
@@ -78,10 +79,6 @@ class KdlDkin(object):
 if __name__ == '__main__':
     rospy.init_node('kdl_dkin', anonymous = False)
     params = rospy.get_param('robot_params')
-    for joint in params:
-        a, d, alpha, _ = [joint[x] for x in joint]
-        print(str(a)+ '  ' + str(d) + '  ' + str(alpha))
-
     pose_pub = rospy.Publisher('head_pose', PoseStamped, queue_size=1)
     kdl_dkin = KdlDkin(params, pose_pub)
     rospy.Subscriber("joint_states", JointState, kdl_dkin.joint_state_callback)
