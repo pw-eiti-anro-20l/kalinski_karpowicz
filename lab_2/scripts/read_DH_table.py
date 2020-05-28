@@ -35,6 +35,9 @@ def dh_2_rpy(table_name, config_file):
     x_axis = (1, 0, 0)
     z_axis = (0, 0, 1)
     params = []
+    link_len = []
+
+
 
     for i in range(0, lines_read):
         tz = translation_matrix((0, 0, table['d'][i]))  
@@ -46,7 +49,7 @@ def dh_2_rpy(table_name, config_file):
 
         #params = table
 
-        dh_matrix = concatenate_matrices(tz, rz, tx, rx)
+        dh_matrix = concatenate_matrices(tx, rx, tz, rz)
 
         (r, p, y) = euler_from_matrix(dh_matrix)
         (x_, y_, z_) = translation_from_matrix(dh_matrix)
@@ -57,6 +60,7 @@ def dh_2_rpy(table_name, config_file):
         xes.append(x_)
         yes.append(y_)
         zes.append(z_)
+        link_len.append(table['d'][i])
 
     #params = []
 
@@ -80,7 +84,7 @@ def dh_2_rpy(table_name, config_file):
 
     	    f.write("z%d: %.2f\n" % ((i+1), zes[i]))
             #joint['z'] = float(zes[i])
-
+            f.write("link%d_length: %.2f\n" % ((i+1), float(link_len[i])))
             #params.append(joint)
 
     return params 
