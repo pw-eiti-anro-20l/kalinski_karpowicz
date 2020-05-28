@@ -2,12 +2,11 @@
 
 import sys
 import rospy
+from lab_4.srv import JintControl
 import math
 from sensor_msgs.msg import JointState
 from geometry_msgs.msg import PoseStamped
 from nav_msgs.msg import Path
-
-from lab_4.srv import JintControl
 from lab_3.kdl_dkin import KdlDkin
 
 class GenericInterpolator(object):
