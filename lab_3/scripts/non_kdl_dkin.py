@@ -47,6 +47,15 @@ class NonKdlDkin:
             transformation = concatenate_matrices(x_rot, x_transl, z_rot, z_transl)
             result = concatenate_matrices(result, transformation)
 
+            #tool
+        x_transl = translation_matrix((0.2, 0, 0))
+        x_rot = rotation_matrix(0, X)
+        z_transl = translation_matrix((0, 0, 0))
+        z_rot = rotation_matrix(0, Z)
+
+        transformation = concatenate_matrices(x_rot, x_transl, z_rot, z_transl)
+        result = concatenate_matrices(result, transformation)
+        
         pose = PoseStamped()
         pose.header.stamp = msg.header.stamp
         pose.header.frame_id = "base_link"
