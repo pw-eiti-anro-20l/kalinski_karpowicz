@@ -34,6 +34,10 @@ def dh_2_rpy(table_name, config_file):
 
     x_axis = (1, 0, 0)
     z_axis = (0, 0, 1)
+    params = []
+    link_len = []
+
+
 
     for i in range(0, lines_read):
         tz = translation_matrix((0, 0, table['d'][i]))  
@@ -41,7 +45,11 @@ def dh_2_rpy(table_name, config_file):
         tx = translation_matrix((table['a'][i], 0, 0))  
         rx = rotation_matrix(table['alpha'][i], x_axis) 
 
-        dh_matrix = concatenate_matrices(tz, rz, tx, rx)
+        params.append({'theta': table['theta'][i], 'alpha': table['alpha'][i], 'a': table['a'][i], 'd': table['d'][i]})
+
+        #params = table
+
+        dh_matrix = concatenate_matrices(tx, rx, tz, rz)
 
         (r, p, y) = euler_from_matrix(dh_matrix)
         (x_, y_, z_) = translation_from_matrix(dh_matrix)
@@ -52,19 +60,41 @@ def dh_2_rpy(table_name, config_file):
         xes.append(x_)
         yes.append(y_)
         zes.append(z_)
+        link_len.append(table['d'][i])
+
+    #params = []
 
     with open(join('config', config_file), 'w+') as f:
         for i in range(0, lines_read):
+            #joint = {}
     	    f.write("roll%d: %.2f\n" % ((i+1), roll[i]))
+            #joint['roll'] = float(roll[i])
+
     	    f.write("pitch%d: %.2f\n" % ((i+1), pitch[i]))
+            #joint['pitch'] = float(pitch[i])
+
     	    f.write("yaw%d: %.2f\n" % ((i+1), yaw[i]))
+            #joint['yaw'] = float(yaw[i])
+
     	    f.write("x%d: %.2f\n" % ((i+1), xes[i]))
+            #joint['x'] = float(xes[i])
+
     	    f.write("y%d: %.2f\n" % ((i+1), yes[i]))
+            #joint['y'] = float(yes[i])
+
     	    f.write("z%d: %.2f\n" % ((i+1), zes[i]))
+            #joint['z'] = float(zes[i])
+            f.write("link%d_length: %.2f\n" % ((i+1), float(link_len[i])))
+            #params.append(joint)
+
+    return params 
 
 if __name__ == '__main__':
     rospy.init_node("gazebo_odometry_node")
 
-    table_path = rospy.get_param('~dh_table_path', '/home/marcel/ros_ws/anro_ws/kalinski_karpowicz/src/lab_2/config/dh_table.csv')
-    dh_2_rpy(table_path, join(dirname(table_path), 'urdf_params.yaml'))
+    table_path = rospy.get_param('~dh_table_path', 'dh_table.csv')
+    params = dh_2_rpy(table_path, join(dirname(table_path), 'urdf_params.yaml'))
     rospy.loginfo('table converted')
+    rospy.loginfo('setting parameters')
+    rospy.set_param('robot_params', params)
+    rospy.loginfo('params sent to parameter server')

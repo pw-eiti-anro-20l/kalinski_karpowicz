@@ -1,0 +1,26 @@
+<launch>
+    <arg name="rviz_config" default="$(find lab_5)/config/config.rviz" />
+    <arg name="model" default="3_degree_robot.xacro"/>
+    
+    <node pkg="rqt_service_caller" name="rqt_service_caller" type="rqt_service_caller"/>
+
+    <!-- read DH parameters from lab_2/config/dh_table.csv and save them in lab_2/config/urdf_params.yaml-->
+    <node pkg="lab_2" type="read_DH_table.py" name="dh_converter" output="screen">
+        <param name="dh_table_path" value="$(find lab_2)/config/dh_table.csv"/>
+    </node>
+    
+    <!-- open xacro model based on DH parameters-->
+    <param name="robot_description" command="xacro '$(find lab_2)/xacro/$(arg model)'"/>
+    <param name="use_gui" value="true"/>
+
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+		<rosparam param="source_list">["joint_state"]</rosparam>
+	</node> 
+    
+    <!-- publish TF data from joint_state topic-->
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+    <!-- spawn rviz with required config -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rviz_config)" required="true"/>
+
+</launch>

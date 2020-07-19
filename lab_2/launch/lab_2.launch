@@ -2,11 +2,11 @@
     <arg name="model" default="3_degree_robot.xacro"/>
 
     <node pkg="lab_2" type="read_DH_table.py" name="dh_converter" output="screen">
-        <param name="dh_table_path" value="/home/marcel/ros_ws/anro_ws/kalinski_karpowicz/src/lab_2/config/dh_table.csv"/>
+        <param name="dh_table_path" value="$(find lab_2)/config/dh_table.csv"/>
     </node>
 
-    <include file="$(find urdf_tutorial)/launch/display.launch">
+    <!--include file="$(find urdf_tutorial)/launch/display.launch">
         <arg name="model" default="$(find lab_2)/xacro/3_degree_robot.xacro"/>
-    </include>
+    </include-->
 
 </launch>
